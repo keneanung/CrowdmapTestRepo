@@ -13,7 +13,7 @@ export class Rule {
 
     public async check(danger: DangerDSLType): Promise<void> {
         if (await this.checkFunction(danger)) {
-            message(this.readableName, {icon: ":heavy_check_mark:", line: 1});
+            message(this.readableName, {icon: ":heavy_check_mark:"});
         } else {
             fail(this.readableName);
         }
