@@ -1,6 +1,6 @@
 //import { DangerDSLType, message, fail } from "danger";
 
-import { danger, DangerDSLType } from "danger";
+import { DangerDSLType } from "danger";
 
 export class Rule {
     private readonly checkFunction: (danger: DangerDSLType) => Promise<boolean>;
@@ -13,7 +13,7 @@ export class Rule {
 
     public async check(danger: DangerDSLType): Promise<void> {
         if (await this.checkFunction(danger)) {
-            message(this.readableName);
+            message(this.readableName, {icon: ":heavy_check_mark:"});
         } else {
             fail(this.readableName);
         }
