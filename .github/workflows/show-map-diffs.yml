@@ -3,9 +3,19 @@ name: Map diffs
 on: [pull_request_target]
 
 jobs:
+  check-env:
+    outputs:
+      cloudinary_name: ${{ steps.cloudinary_name.outputs.defined }}
+    steps:
+      - id: cloudinary_name
+        env:
+          CLOUDINARY_NAME: ${{ secrets.CLOUDINARY_NAME }}
+        if: "${{ env.CLOUDINARY_NAME != '' }}"
+        run: echo "::set-output name=defined::true"
   map-diff:
-    if: secrets.CLOUDINARY_NAME != null
     runs-on: ubuntu-latest
+    needs: [check-env]
+    if: needs.check-env.outputs.cloudinary_name == 'true'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
