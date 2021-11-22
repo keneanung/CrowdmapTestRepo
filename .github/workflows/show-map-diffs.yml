@@ -4,6 +4,7 @@ on: [pull_request_target]
 
 jobs:
   map-diff:
+    if: secrets.CLOUDINARY_NAME != null
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
