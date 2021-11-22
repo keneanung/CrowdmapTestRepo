@@ -4,6 +4,7 @@ on: [pull_request_target]
 
 jobs:
   check-env:
+    runs-on: ubuntu-latest
     outputs:
       cloudinary_name: ${{ steps.cloudinary_name.outputs.defined }}
     steps:
