@@ -34,9 +34,9 @@ jobs:
           comment-id: ${{ steps.fc.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            Textual map diff
+            ## Textual map diff
             <details>
-            <summary>Open to see the diff for commit ${{ github.event.pull_request.head.ref }}</summary>
+            <summary>Open to see the diff for commit ${{ github.event.pull_request.head.sha }}</summary>
             This is a placeholder
             </details>
           edit-mode: replace
