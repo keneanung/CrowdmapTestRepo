@@ -33,6 +33,9 @@ jobs:
         id: graphtage
         run: |
           diff_output=$(graphtage --html --log-level CRITICAL old/Map/map.json current/Map/map.json | tail -n +9 | head -n -2)
+          diff_output="${diff_output//'%'/'%25'}"
+          diff_output="${diff_output//$'\n'/'%0A'}"
+          diff_output="${diff_output//$'\r'/'%0D'}"
           echo "::set-output name=diff::${diff_output}"
 
       - name: Find Comment
