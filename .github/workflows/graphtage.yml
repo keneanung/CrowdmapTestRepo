@@ -32,7 +32,7 @@ jobs:
       - name: get graphtage diff
         id: graphtage
         run: |
-          diff_output=$(graphtage --html --log-level CRITICAL Map/map_empty.json Map/map.json | tail -n +9 | head -n -2)
+          diff_output=$(graphtage --html --log-level CRITICAL old/Map/map.json current/Map/map.json | tail -n +9 | head -n -2)
           echo "::set-output name=diff::${diff_output}"
 
       - name: Find Comment
