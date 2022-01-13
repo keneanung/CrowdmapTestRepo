@@ -36,6 +36,7 @@ jobs:
           diff_output="${diff_output//'%'/'%25'}"
           diff_output="${diff_output//$'\n'/'%0A'}"
           diff_output="${diff_output//$'\r'/'%0D'}"
+          echo "${diff_output}"
           echo "::set-output name=diff::${diff_output}"
 
       - name: Find Comment
