@@ -55,6 +55,6 @@ jobs:
             ## Textual map diff
             <details>
             <summary>Open to see the diff for commit ${{ github.event.pull_request.head.sha }}</summary>
-            ${{ steps.graphtage.outputs.dff }}
+            ${{ steps.graphtage.outputs.diff }}
             </details>
           edit-mode: replace
