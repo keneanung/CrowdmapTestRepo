@@ -20,6 +20,21 @@ jobs:
           repository: ${{ github.event.pull_request.base.repo.full_name }}
           fetch-depth: 0
           path: old
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install graphtage
+
+      - name: get graphtage diff
+        id: graphtage
+        run: |
+          diff_output=$(graphtage --html --log-level CRITICAL Map/map_empty.json Map/map.json | tail -n +9 | head -n -2)
+          echo "::set-output name=diff::${diff_output}"
+
       - name: Find Comment
         uses: peter-evans/find-comment@v1
         id: fc
@@ -27,7 +42,6 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: 'github-actions[bot]'
           body-includes: Textual map diff
-
       - name: Create or update comment
         uses: peter-evans/create-or-update-comment@v1
         with:
@@ -37,6 +51,6 @@ jobs:
             ## Textual map diff
             <details>
             <summary>Open to see the diff for commit ${{ github.event.pull_request.head.sha }}</summary>
-            This is a placeholder
+            ${{ steps.graphtage.outputs.dff }}
             </details>
           edit-mode: replace
