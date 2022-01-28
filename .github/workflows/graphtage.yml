@@ -23,7 +23,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          apt install jq
+          sudo apt-get install jq
 
       - name: get graphtage diff
         id: graphtage
