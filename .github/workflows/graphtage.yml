@@ -51,7 +51,7 @@ jobs:
             const commentBody = fs.readFileSync('output.txt');
             const commentId = ${{ steps.fc.outputs.comment-id }};
             if(commentId){
-              github.rest.issues.updateComment({({
+              github.rest.issues.updateComment({
                 comment_id: commentId,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
