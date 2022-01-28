@@ -23,7 +23,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt-get install jq
+          sudo apt-get install jq diff
 
       - name: get graphtage diff
         id: graphtage
@@ -32,9 +32,6 @@ jobs:
           echo "<details>" >> output.txt
           echo "<summary>Open to see the diff for commit ${{ github.event.pull_request.head.sha }}</summary>" >> output.txt
           echo "```diff" >> output.txt
-          pwd
-          ls
-          ls old/
           ./old/create-diff.sh >> output.txt
           echo "```" >> output.txt
           echo "</details>" >> output.txt
