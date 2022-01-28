@@ -28,12 +28,13 @@ jobs:
       - name: get graphtage diff
         id: graphtage
         run: |
-          diff_output=$(./old/create-diff.sh)
-          diff_output="${diff_output//'%'/'%25'}"
-          diff_output="${diff_output//$'\n'/'%0A'}"
-          diff_output="${diff_output//$'\r'/'%0D'}"
-          echo "${diff_output}"
-          echo "::set-output name=diff::${diff_output}"
+          echo "## Textual map diff" > output.txt
+          echo "<details>" >> output.txt
+          echo "<summary>Open to see the diff for commit ${{ github.event.pull_request.head.sha }}</summary>" >> output.txt
+          echo "```diff" >> output.txt
+          ./old/create-diff.sh >> output.txt
+          echo "```" >> output.txt
+          echo "</details>" >> output.txt
 
       - name: Find Comment
         uses: peter-evans/find-comment@v1
@@ -43,16 +44,24 @@ jobs:
           comment-author: 'github-actions[bot]'
           body-includes: Textual map diff
       - name: Create or update comment
-        uses: peter-evans/create-or-update-comment@v1
+        uses: actions/github-script@v5
         with:
-          comment-id: ${{ steps.fc.outputs.comment-id }}
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            ## Textual map diff
-            <details>
-            <summary>Open to see the diff for commit ${{ github.event.pull_request.head.sha }}</summary>
-            ```diff
-            ${{ steps.graphtage.outputs.diff }}
-            ```
-            </details>
-          edit-mode: replace
+          script: |
+            const fs = require('fs');
+            const commentBody = fs.readFileSync('output.txt');
+            const commentId = ${{ steps.fc.outputs.comment-id }};
+            if(commentId){
+              github.rest.issues.updateComment({({
+                comment_id: commentId,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: commentBody
+              })
+            } else {
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: commentBody
+            })
+            }
