@@ -14,6 +14,6 @@ jobs:
     - name: Install yarn dependencies
       run: |
         yarn install --frozen-lockfile
-        yarn danger ci -d danger/dangerfile.ts --outputJSON
+        yarn danger local -d danger/dangerfile.ts --outputJSON -b ${{ github.event.pull_request.base.ref }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
