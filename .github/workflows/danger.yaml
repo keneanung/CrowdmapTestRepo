@@ -7,9 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - name: get base branch as well
       run: |
-        git fetch origin +refs/heads/${{github.base_ref}}:refs/remotes/origin/${{github.base_ref}}
+        git fetch --depth=0 origin +refs/heads/${{github.base_ref}}:refs/remotes/origin/${{github.base_ref}}
     - name: Use Node.js
       uses: actions/setup-node@v2.4.1
       with:
