@@ -16,4 +16,11 @@ jobs:
     - name: Install yarn dependencies
       run: |
         yarn install --frozen-lockfile
-        yarn danger local -d danger/dangerfile.ts --outputJSON -b ${{ github.event.pull_request.base.sha }} > output.json
+        yarn danger local -d danger/dangerfile.ts --outputJSON -b ${{ github.event.pull_request.base.sha }} > danger_output.json
+    - name: Add metadata about this run
+      run: |
+        jq "{ output: ., metadata: { pr: \"${{github.event.pull_request.number}}\", commit: \"${{github.event.pull_request.head.sha}}\" } }" danger_output.json > output.json
+    - uses: actions/upload-artifact@v2
+      with:
+        name: output.json
+        path: output.json
