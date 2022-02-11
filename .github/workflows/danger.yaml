@@ -13,10 +13,10 @@ jobs:
       uses: actions/setup-node@v2.4.1
       with:
         node-version: "12.x"
-    - name: Install yarn dependencies
+    - name: Install npm dependencies
       run: |
-        yarn install --frozen-lockfile
-        yarn danger local -d danger/dangerfile.ts --outputJSON -b ${{ github.event.pull_request.base.sha }} > danger_output.json
+        npm ci
+        npx danger local -d danger/dangerfile.ts --outputJSON -b ${{ github.event.pull_request.base.sha }} > danger_output.json
     - name: Add metadata about this run
       run: |
         jq "{ output: ., metadata: { pr: \"${{github.event.pull_request.number}}\", commit: \"${{github.event.pull_request.head.sha}}\" } }" danger_output.json > output.json
