@@ -17,6 +17,8 @@ jobs:
       run: |
         npm ci
         npx danger local -t -d danger/dangerfile.ts --outputJSON -b ${{ github.event.pull_request.base.sha }} > danger_output.json
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Add metadata about this run
       run: |
         cat danger_output.json
