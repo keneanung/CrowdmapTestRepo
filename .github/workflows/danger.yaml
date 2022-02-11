@@ -16,7 +16,7 @@ jobs:
     - name: Install npm dependencies
       run: |
         npm ci
-        npx danger local -d danger/dangerfile.ts --outputJSON -b ${{ github.event.pull_request.base.sha }} > danger_output.json
+        npx danger local -t -d danger/dangerfile.ts --outputJSON -b ${{ github.event.pull_request.base.sha }} > danger_output.json
     - name: Add metadata about this run
       run: |
         cat danger_output.json
