@@ -7,13 +7,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - name: Use Node.js
       uses: actions/setup-node@v2.4.1
       with:
         node-version: "12.x"
-    - name: Install yarn dependencies
+    - name: Install npm dependencies
       run: |
-        yarn install --frozen-lockfile
-        yarn danger ci -d danger/dangerfile.ts --outputJSON
+        npm ci
+        npx danger local -t -d danger/dangerfile.ts --outputJSON -b ${{ github.event.pull_request.base.sha }} > danger_output.json
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Add metadata about this run
+      run: |
+        cat danger_output.json
+        jq -f add-metadata.jq --arg pr_number ${{github.event.pull_request.number}} --arg commit ${{github.event.pull_request.head.sha}} danger_output.json > output.json
+    - uses: actions/upload-artifact@v2
+      with:
+        name: output.json
+        path: output.json
