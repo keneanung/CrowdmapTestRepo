@@ -58,25 +58,25 @@ jobs:
             let commentBody = `## Danger result for ${outputJson.metadata.commit} \n`;
             if(outputJson.output.fails.length > 0) {
               commentBody += "| | Fails |\n"
-              commentBody += "-----------\n"
+              commentBody += "|-|-------|\n"
               for(let i = 0; i < outputJson.output.fails.length; i++) {
-                commentBody += `| :no_entry_sign: | ${outputJson.output.fails[i]} |\n`;
+                commentBody += `| :no_entry_sign: | ${outputJson.output.fails[i].message} |\n`;
               }
               commentBody += "\n";
             }
             if(outputJson.output.warnings.length > 0) {
               commentBody += "| | Warnings |\n"
-              commentBody += "-----------\n"
+              commentBody += "|-|----------|\n"
               for(let i = 0; i < outputJson.output.warnings.length; i++) {
-                commentBody += `| :warning: | ${outputJson.output.warnings[i]} |\n`;
+                commentBody += `| :warning: | ${outputJson.output.warnings[i].message} |\n`;
               }
               commentBody += "\n";
             }
             if(outputJson.output.messages.length > 0) {
               commentBody += "| | Messages |\n"
-              commentBody += "-----------\n"
+              commentBody += "|-|----------|\n"
               for(let i = 0; i < outputJson.output.messages.length; i++) {
-                commentBody += `| :heavy_check_mark: | ${outputJson.output.messages[i]} |\n`;
+                commentBody += `| :heavy_check_mark: | ${outputJson.output.messages[i].message} |\n`;
               }
               commentBody += "\n";
             }
