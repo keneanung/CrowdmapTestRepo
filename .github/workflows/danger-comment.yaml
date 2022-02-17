@@ -55,7 +55,7 @@ jobs:
             const fs = require('fs');
             const outputJsonText = fs.readFileSync('output.json', 'utf8');
             const outputJson = JSON.parse(outputJsonText);
-            let commentBody = `## Danger result for ${outputJson.metadata.commit} \n``;
+            let commentBody = `## Danger result for ${outputJson.metadata.commit} \n`;
             if(outputJson.output.fails.length > 0) {
               commentBody += "| | Fails |\n"
               commentBody += "-----------\n"
@@ -71,7 +71,6 @@ jobs:
                 commentBody += `| :warning: | ${outputJson.output.warnings[i]} |\n`;
               }
               commentBody += "\n";
-            }
             }
             if(outputJson.output.messages.length > 0) {
               commentBody += "| | Messages |\n"
