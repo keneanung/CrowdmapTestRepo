@@ -65,7 +65,7 @@ jobs:
               })
             } else {
               github.rest.issues.createComment({
-                issue_number: context.issue.number,
+                issue_number: "${{ steps.pr-number.outputs.pr-id }}",
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 body: commentBody
