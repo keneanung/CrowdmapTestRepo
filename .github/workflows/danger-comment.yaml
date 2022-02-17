@@ -46,7 +46,7 @@ jobs:
         with:
           issue-number: ${{ steps.pr-number.outputs.pr-id }}
           comment-author: 'github-actions[bot]'
-          body-includes: Textual map diff
+          body-includes: Danger result for
       - name: Create or update comment
         uses: actions/github-script@v6
         with:
@@ -55,7 +55,32 @@ jobs:
             const fs = require('fs');
             const outputJsonText = fs.readFileSync('output.json', 'utf8');
             const outputJson = JSON.parse(outputJsonText);
-            let commentBody = outputJsonText;
+            let commentBody = `## Danger result for ${outputJson.metadata.commit} \n``;
+            if(outputJson.output.fails.length > 0) {
+              commentBody += "| | Fails |\n"
+              commentBody += "-----------\n"
+              for(let i = 0; i < outputJson.output.fails.length; i++) {
+                commentBody += `| :no_entry_sign: | ${outputJson.output.fails[i]} |\n`;
+              }
+              commentBody += "\n";
+            }
+            if(outputJson.output.warnings.length > 0) {
+              commentBody += "| | Warnings |\n"
+              commentBody += "-----------\n"
+              for(let i = 0; i < outputJson.output.warnings.length; i++) {
+                commentBody += `| :warning: | ${outputJson.output.warnings[i]} |\n`;
+              }
+              commentBody += "\n";
+            }
+            }
+            if(outputJson.output.messages.length > 0) {
+              commentBody += "| | Messages |\n"
+              commentBody += "-----------\n"
+              for(let i = 0; i < outputJson.output.messages.length; i++) {
+                commentBody += `| :heavy_check_mark: | ${outputJson.output.messages[i]} |\n`;
+              }
+              commentBody += "\n";
+            }
             const commentId = "${{ steps.fc.outputs.comment-id }}";
             if(commentId){
               github.rest.issues.updateComment({
